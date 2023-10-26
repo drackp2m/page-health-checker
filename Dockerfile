@@ -39,7 +39,7 @@ USER pptruser
 
 COPY package.json package.lock* .
 
-RUN npm install --frozen-lockfile
+RUN npm install --silent --frozen-lockfile
 
 
 
@@ -52,13 +52,13 @@ USER root
 
 RUN apt update && apt install -y sudo zsh
 
-RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k \
-		&& echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
-
-RUN addgroup pptruser root \
-			&& echo "%root ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers
+# RUN addgroup pptruser root \
+# 			&& echo "%root ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers
 
 USER pptruser
+
+RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k \
+		&& echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
 
 RUN git config --global --add safe.directory /usr/src/app
 

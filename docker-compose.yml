@@ -35,6 +35,7 @@ services:
       - ${API_PORT}:3000
     volumes:
       - .:/usr/src/app
+      - /usr/src/app/node_modules
     environment:
       CHROME_BIN: /usr/bin/chromium-browser
       PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
