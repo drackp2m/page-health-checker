@@ -1,0 +1,47 @@
+version: '3.8'
+
+networks:
+  boilerplate:
+    name: boilerplate
+
+services:
+  db:
+    image: keinos/sqlite3:latest
+    container_name: db
+    hostname: db
+    networks:
+      - boilerplate
+    volumes:
+      - ./sqlite/:/root/db/
+    environment:
+      TZ: UTC
+    restart: unless-stopped
+    tty: true
+
+  node:
+    container_name: node
+    hostname: node
+    working_dir: /usr/src/app
+    build:
+      context: .
+      target: base
+    cap_add:
+      - SYS_ADMIN
+      - DAC_READ_SEARCH
+    networks:
+      - boilerplate
+    ports:
+      - ${APP_PORT}:4200
+      - ${API_PORT}:3000
+    volumes:
+      - .:/usr/src/app
+    environment:
+      CHROME_BIN: /usr/bin/chromium-browser
+      PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+      PATH: $PATH:/usr/src/app/node_modules/.bin
+      TZ: UTC
+    depends_on:
+      - db
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
