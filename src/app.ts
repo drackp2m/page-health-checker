@@ -4,7 +4,7 @@ const app = express()
 const port = 3000
 
 app.get('/', (req, res) => {
-  res.send('api v1')
+  res.send('QA Health Checker 2000')
 })
 
 app.listen(port, () => {
