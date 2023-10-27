@@ -1,7 +1,7 @@
 {
 	"name": "boilerplate",
 	"version": "1.0.0",
-	"description": "is qa working?",
+	"description": "Is QA working?",
 	"main": "src/api/app.ts",
 	"scripts": {
 		"dev:checker": "ts-node src/api/puppeteer.app.ts",

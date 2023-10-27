@@ -1,4 +1,4 @@
-version: '3.6'
+version: '3.8'
 
 networks:
   boilerplate:
@@ -11,10 +11,7 @@ services:
     working_dir: /usr/src/app
     build:
       context: .
-      target: dev-attached
-      args:
-        USER_GID: 1001
-        USER_UID: 1001
+      target: base
     cap_add:
       - SYS_ADMIN
     networks:

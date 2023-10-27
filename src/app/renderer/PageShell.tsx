@@ -24,7 +24,7 @@ export function Header({ url }) {
 					404
 				</a>
 
-				<a href="/500x" class={url == '/50x0' && 'active'}>
+				<a href="/500" class={url == '/50x0' && 'active'}>
 					500
 				</a>
 			</nav>
