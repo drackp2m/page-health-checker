@@ -28,9 +28,9 @@ services:
     environment:
       PATH: $PATH:/usr/src/app/node_modules/.bin
       TZ: UTC
-      PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
       PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-      MIKRO_ORM_CLI: src/mikro-orm.config.ts
+      PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
+      MIKRO_ORM_CLI: src/database/mikro-orm.config.ts
       MIKRO_ORM_CLI_TS_CONFIG_PATH: tsconfig.json
       MIKRO_ORM_CLI_USE_TS_NODE: 1
     restart: unless-stopped

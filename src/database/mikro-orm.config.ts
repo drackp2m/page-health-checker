@@ -1,6 +1,6 @@
 import { Options } from '@mikro-orm/core';
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
-import { Status } from './entities/status.entity';
+import { Status } from '../entities/status.entity';
 
 const config: Options = {
   type: 'sqlite',

@@ -1,7 +1,7 @@
 import { MikroORM } from '@mikro-orm/core';
 import puppeteer from 'puppeteer';
-import config from './mikro-orm.config';
-import { Status } from './entities/status.entity';
+import config from '../database/mikro-orm.config';
+import { Status } from '../entities/status.entity';
 import { EntityRepository } from '@mikro-orm/sqlite';
 
 export class PuppeteerApp {

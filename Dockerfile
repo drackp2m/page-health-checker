@@ -57,4 +57,4 @@ RUN mkdir /home/pptruser/.gnupg \
 RUN mkdir -p ~/.local/share/zsh/plugins \
 			&& ln -s /usr/share/zsh/plugins/powerlevel10k ~/.local/share/zsh/plugins/
 
-CMD npm start
+CMD npm dev:api

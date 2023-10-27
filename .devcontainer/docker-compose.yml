@@ -11,8 +11,5 @@ services:
       - ~/.ssh:/home/pptruser/.ssh:ro
       - ~/.gnupg/pubring.kbx:/home/pptruser/.gnupg/pubring.kbx:ro
       - ~/.gnupg/private-keys-v1.d:/home/pptruser/.gnupg/private-keys-v1.d:ro
-      - ~/.gitconfig:/home/pptruser/.gitconfig
-      - .docker/.p10k.zsh:/home/pptruser/.p10k.zsh
-      - .docker/.zsh_history:/home/pptruser/.zsh_history
-      - .docker/.zshrc:/home/pptruser/.zshrc
-      - .docker/zsh-syntax-highlighting:/home/pptruser/zsh-syntax-highlighting
+      - ~/.gitconfig:/home/pptruser/.gitconfig:ro
+      # - ./zsh:/home/pptruser/.local/share/zsh
