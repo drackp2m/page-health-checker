@@ -2,9 +2,6 @@ FROM node:20-alpine AS base
 
 WORKDIR /usr/src/app
 
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
-
 RUN apk update && apk add --no-cache --virtual \
 		build-deps \
 		udev \

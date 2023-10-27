@@ -41,8 +41,9 @@ Thumbs.db
 #docker
 docker-compose.override.yml
 
+.cache
 .angular
-.pgdata*
+.sqlite*
 .docker
 .env
 

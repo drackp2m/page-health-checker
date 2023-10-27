@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.6'
 
 networks:
   boilerplate:
@@ -12,7 +12,7 @@ services:
     networks:
       - boilerplate
     volumes:
-      - ./sqlite/:/root/db/
+      - .sqlite/:/root/db/
     environment:
       TZ: UTC
     restart: unless-stopped
@@ -24,10 +24,12 @@ services:
     working_dir: /usr/src/app
     build:
       context: .
-      target: base
+      target: dev-attached
+      args:
+        USER_GID: 1001
+        USER_UID: 1001
     cap_add:
       - SYS_ADMIN
-      - DAC_READ_SEARCH
     networks:
       - boilerplate
     ports:
@@ -37,10 +39,10 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     environment:
-      CHROME_BIN: /usr/bin/chromium-browser
-      PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
       PATH: $PATH:/usr/src/app/node_modules/.bin
       TZ: UTC
+      PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
+      PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
     depends_on:
       - db
     restart: unless-stopped
