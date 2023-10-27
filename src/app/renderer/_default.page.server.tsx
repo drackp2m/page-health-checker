@@ -1,12 +1,20 @@
 export { render };
+
 // See https://vike.dev/data-fetching
 export const passToClient = ['pageProps', 'urlPathname'];
 
 import { renderToString } from 'preact-render-to-string';
+import { dangerouslySkipEscape, escapeInject } from 'vike/server';
+
+import { getStatuses } from '../services/statuses.service';
+
 import { PageShell } from './PageShell';
-import { escapeInject, dangerouslySkipEscape } from 'vike/server';
 
 async function render(pageContext) {
+	const data = await getStatuses();
+
+	console.log(data);
+
 	const { Page, pageProps } = pageContext;
 	// This render() hook only supports SSR, see https://vike.dev/render-modes for how to modify render() to support SPA
 	if (!Page) throw new Error('My render() hook expects pageContext.Page to be defined');
@@ -19,8 +27,7 @@ async function render(pageContext) {
 	// See https://vike.dev/head
 	const { documentProps } = pageContext.exports;
 	const title = (documentProps && documentProps.title) || 'Vite SSR + Preact';
-	const desc =
-		(documentProps && documentProps.description) || 'Preact app with Vite and vike';
+	const desc = (documentProps && documentProps.description) || 'Preact app with Vite and vike';
 
 	const documentHtml = escapeInject`<!DOCTYPE html>
 		<html lang="en">

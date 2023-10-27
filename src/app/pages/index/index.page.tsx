@@ -1,11 +1,12 @@
-import preactLogo from '../assets/preact.svg';
+import logo from '../assets/preact.svg';
+
 import './style.scss';
 
 export function Page() {
 	return (
 		<div>
 			<a href="https://preactjs.com" target="_blank">
-				<img src={preactLogo} alt="Preact logo" height="160" width="160" />
+				<img src={logo} alt="Preact logo" height="160" width="160" />
 			</a>
 			<h1>Get Started building Vite-powered Preact Apps </h1>
 			<section>

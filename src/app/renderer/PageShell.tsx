@@ -1,5 +1,5 @@
 import { PageContextProvider } from './usePageContext';
-import './PageShell.css';
+import './PageShell.scss';
 
 export { PageShell };
 
@@ -19,8 +19,13 @@ export function Header({ url }) {
 				<a href="/" class={url == '/' && 'active'}>
 					Home
 				</a>
+
 				<a href="/404" class={url == '/404' && 'active'}>
 					404
+				</a>
+
+				<a href="/500x" class={url == '/50x0' && 'active'}>
+					500
 				</a>
 			</nav>
 		</header>

@@ -8,7 +8,9 @@
     "esModuleInterop": true,
     "strict": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+		"jsx": "react-jsx",
+		"jsxImportSource": "preact"
   },
   "include": ["./src"],
   "exclude": ["node_modules"]

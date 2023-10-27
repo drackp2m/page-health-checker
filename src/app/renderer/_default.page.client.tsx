@@ -1,6 +1,7 @@
 export { render };
 
 import { hydrate } from 'preact';
+
 import { PageShell } from './PageShell';
 
 // This render() hook only supports SSR, see https://vike.dev/render-modes for how to modify render() to support SPA

@@ -3,11 +3,7 @@ FROM node:20-alpine AS base
 WORKDIR /usr/src/app
 
 RUN apk update && apk add --no-cache --virtual \
-		build-deps \
-		udev \
-		ttf-opensans \
-		chromium \
-		ca-certificates
+		build-base python3 chromium udev ttf-opensans ca-certificates
 
 RUN addgroup pptruser \
 		&& adduser pptruser -D -G pptruser \
@@ -57,4 +53,4 @@ RUN mkdir /home/pptruser/.gnupg \
 RUN mkdir -p ~/.local/share/zsh/plugins \
 			&& ln -s /usr/share/zsh/plugins/powerlevel10k ~/.local/share/zsh/plugins/
 
-CMD npm dev:api
+CMD npm run dev
