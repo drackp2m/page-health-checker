@@ -2,13 +2,13 @@
 	"root": true,
 	"plugins": [],
 	"extends": ["eslint:recommended"],
+	"env": {
+		"browser": true
+	},
 	"overrides": [
 		{
 			"files": ["*.tsx", "*.jsx"],
 			"plugins": ["react", "react-hooks"],
-			"env": {
-				"browser": true
-			},
 			"rules": {
 
 			}

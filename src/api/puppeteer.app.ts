@@ -1,24 +1,19 @@
 import { MikroORM } from '@mikro-orm/core';
+import { EntityRepository } from '@mikro-orm/sqlite';
 import puppeteer from 'puppeteer';
+
 import config from '../database/mikro-orm.config';
 import { Status } from '../entities/status.entity';
-import { EntityRepository } from '@mikro-orm/sqlite';
 
 export class PuppeteerApp {
 	private repository!: EntityRepository<Status>;
 
-  private count = 0;
+	private count = 0;
 
 	private time = 0;
 
 	constructor() {
 		this.initMikroOrm();
-	}
-
-	private async initMikroOrm(): Promise<void> {
-		const orm = await MikroORM.init(config);
-
-		this.repository = orm.em.fork().getRepository(Status);
 	}
 
 	async execute() {
@@ -37,7 +32,7 @@ export class PuppeteerApp {
 		{
 			const browser = await puppeteer.launch({
 				headless: 'new',
-				timeout: 1000
+				timeout: 1000,
 			});
 
 			const page = await browser.newPage();
@@ -55,10 +50,10 @@ export class PuppeteerApp {
 
 				await card?.click();
 
-        // await page.screenshot({ path: `./snapshot_${position}.png` });
+				// await page.screenshot({ path: `./snapshot_${position}.png` });
 			}
 
-			const wrongSets = (await text?.evaluate(el => el.textContent))?.split(':')[1];
+			const wrongSets = (await text?.evaluate((el) => el.textContent))?.split(':')[1];
 
 			await browser.close();
 
@@ -70,17 +65,21 @@ export class PuppeteerApp {
 			time += now.getMinutes().toString().padStart(2, '0') + ':';
 			time += now.getSeconds().toString().padStart(2, '0');
 
-			console.log(`[${time}] ` + (result ? 'Good luck' : 'Bad luck') + ` checking cards: ${cardPositions.join(',')}.`)
-      
-      this.count++;
-      if (result) {
-        console.log(`${this.count} trys...`);
-        throw new Error('error');
-      }
+			console.log(
+				`[${time}] ` +
+					(result ? 'Good luck' : 'Bad luck') +
+					` checking cards: ${cardPositions.join(',')}.`,
+			);
+
+			this.count++;
+			if (result) {
+				console.log(`${this.count} trys...`);
+				throw new Error('error');
+			}
 
 			const entity = new Status({
-				responseTime: new Date().getTime() - this.time
-			})
+				responseTime: new Date().getTime() - this.time,
+			});
 
 			const data = this.repository.create(entity);
 
@@ -88,6 +87,12 @@ export class PuppeteerApp {
 
 			return result;
 		}
+	}
+
+	private async initMikroOrm(): Promise<void> {
+		const orm = await MikroORM.init(config);
+
+		this.repository = orm.em.fork().getRepository(Status);
 	}
 
 	private getThreeRandomNumbersBetweenOneAndTwelve(): number[] {

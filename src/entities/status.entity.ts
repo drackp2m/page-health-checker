@@ -1,13 +1,14 @@
 import { Entity, Property } from '@mikro-orm/core';
-import { BaseEntity } from './base.entity';
+
+import { CustomBaseEntity } from './base.entity';
 
 @Entity()
-export class Status extends BaseEntity {
-  @Property()
-  responseTime!: number;
+export class Status extends CustomBaseEntity {
+	@Property()
+	responseTime!: number;
 
-  constructor(data: Partial<Status>) {
-    super();
-    Object.assign(this, data);
-  }
+	constructor(data: Partial<Status>) {
+		super();
+		Object.assign(this, data);
+	}
 }

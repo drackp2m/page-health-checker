@@ -10,7 +10,9 @@
 		"dev:app": "vite",
 		"build:app": "vite build",
 		"preview:app": "vite preview",
-		"migrations:execute": "mikro-orm migration:up",
+		"migration:check": "mikro-orm migration:pending",
+		"migration:generate": "mikro-orm migration:create",
+		"migration:execute": "mikro-orm migration:up",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"author": "Marc Jovaní González",
@@ -22,7 +24,7 @@
 		"@mikro-orm/sql-highlighter": "^1.0.1",
 		"@mikro-orm/sqlite": "^5.9.0",
 		"dotenv": "^16.3.1",
-		"express": "^4.18.2",
+		"fastify": "^4.24.3",
 		"mikro-orm": "^5.9.0",
 		"preact": "^10.18.1",
 		"preact-render-to-string": "^6.2.2",
@@ -30,7 +32,6 @@
 	},
 	"devDependencies": {
 		"@preact/preset-vite": "^2.6.0",
-		"@types/express": "^4.17.20",
 		"@typescript-eslint/eslint-plugin": "^6.9.0",
 		"@typescript-eslint/parser": "^6.9.0",
 		"eslint": "^8.52.0",
