@@ -1,31 +1,23 @@
 {
 	"root": true,
-	"ignorePatterns": ["**/*"],
-	"plugins": ["@nx"],
+	"plugins": [],
+	"extends": ["eslint:recommended"],
+	"env": {
+		"browser": true
+	},
 	"overrides": [
 		{
-			"files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+			"files": ["*.tsx", "*.jsx"],
+			"plugins": ["react", "react-hooks"],
 			"rules": {
-				"@nx/enforce-module-boundaries": [
-					"error",
-					{
-						"enforceBuildableLibDependency": true,
-						"allow": [],
-						"depConstraints": [
-							{
-								"sourceTag": "*",
-								"onlyDependOnLibsWithTags": ["*"]
-							}
-						]
-					}
-				]
+
 			}
 		},
 		{
 			"files": ["*.ts", "*.tsx"],
 			"parser": "@typescript-eslint/parser",
 			"plugins": ["@typescript-eslint", "import", "unused-imports"],
-			"extends": ["plugin:@nx/typescript"],
+			"extends": [],
 			"parserOptions": {
 				"ecmaVersion": 2023,
 				"sourceType": "module"
@@ -117,7 +109,7 @@
 		},
 		{
 			"files": ["*.js", "*.jsx"],
-			"extends": ["plugin:@nx/javascript"],
+			"extends": [],
 			"rules": {}
 		},
 		{

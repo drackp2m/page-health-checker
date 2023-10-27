@@ -2,15 +2,8 @@ FROM node:20-alpine AS base
 
 WORKDIR /usr/src/app
 
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
-
 RUN apk update && apk add --no-cache --virtual \
-		build-deps \
-		udev \
-		ttf-opensans \
-		chromium \
-		ca-certificates
+		build-base python3 chromium udev ttf-opensans ca-certificates
 
 RUN addgroup pptruser \
 		&& adduser pptruser -D -G pptruser \
@@ -60,4 +53,4 @@ RUN mkdir /home/pptruser/.gnupg \
 RUN mkdir -p ~/.local/share/zsh/plugins \
 			&& ln -s /usr/share/zsh/plugins/powerlevel10k ~/.local/share/zsh/plugins/
 
-CMD npm start
+CMD npm run dev

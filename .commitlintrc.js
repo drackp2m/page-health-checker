@@ -1,6 +1,6 @@
 /** @type {import('cz-git').UserConfig} */
 module.exports = {
-	extends: ['@commitlint/config-nx-scopes'],
+	extends: ['@commitlint/config-conventional'],
 	rules: {
 		'type-empty': [2, 'always'],
 		'type-enum': [
@@ -20,6 +20,7 @@ module.exports = {
 				'revert',
 			],
 		],
+		'subject-empty': [2, 'always'],
 		'subject-full-stop': [0],
 		'subject-min-length': [2, 'always', 10],
 		'subject-max-length': [2, 'always', 69],
@@ -35,6 +36,18 @@ module.exports = {
 			scope: 'What is the scope of this change (e.g. app or api-e2e)',
 			subject: 'Type the subject'
 		},
+		allowCustomScopes: false,
+		scopes: [
+			{
+				value: 'api', 'name': 'api - Backend made by Fastify',
+			},
+			{
+				value: 'app', 'name': 'app - Frontend made by Preact',
+			},
+			{
+				value: 'checker', name: 'checker - Vanilla JS made by Puppeteer',
+			}
+		],
 		types: [
 			{ value: 'feat', name: 'feat:     ✨ A new feature', emoji: '✨' },
 			{

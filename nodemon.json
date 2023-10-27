@@ -1,7 +1,7 @@
 {
-  "watch": ["src"],
+  "watch": ["src/api"],
   "ext": "ts",
-	"delay": "1000",
+	"delay": 100,
   "execMap": {
     "ts": "ts-node"
   }

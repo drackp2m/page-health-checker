@@ -1,18 +1,15 @@
-version: '3.8'
+version: '3.6'
 
 services:
   node:
     build:
       target: dev-attached
       args:
-        USER_GID: 20
-        USER_UID: 501
+        USER_GID: 1001
+        USER_UID: 1001
     volumes:
       - ~/.ssh:/home/pptruser/.ssh:ro
       - ~/.gnupg/pubring.kbx:/home/pptruser/.gnupg/pubring.kbx:ro
       - ~/.gnupg/private-keys-v1.d:/home/pptruser/.gnupg/private-keys-v1.d:ro
-      - ~/.gitconfig:/home/pptruser/.gitconfig
-      - .docker/.p10k.zsh:/home/pptruser/.p10k.zsh
-      - .docker/.zsh_history:/home/pptruser/.zsh_history
-      - .docker/.zshrc:/home/pptruser/.zshrc
-      - .docker/zsh-syntax-highlighting:/home/pptruser/zsh-syntax-highlighting
+      - ~/.gitconfig:/home/pptruser/.gitconfig:ro
+      # - ./zsh:/home/pptruser/.local/share/zsh
