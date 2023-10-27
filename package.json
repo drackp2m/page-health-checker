@@ -10,7 +10,7 @@
 		"dev:app": "vite",
 		"build:app": "vite build",
 		"preview:app": "vite preview",
-		"test": "echo \"Error: no test specified\" && exit 1",
+		"test": "echo \"Would you like to have tests?\n(me too)\"",
 		"migration:check": "mikro-orm migration:pending",
 		"migration:generate": "mikro-orm migration:create",
 		"migration:execute": "mikro-orm migration:up",
