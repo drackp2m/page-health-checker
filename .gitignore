@@ -43,8 +43,6 @@ docker-compose.override.yml
 
 .cache
 .angular
-.sqlite*
+.database*
 .docker
 .env
-
-.nx/cache

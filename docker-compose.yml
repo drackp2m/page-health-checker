@@ -5,19 +5,6 @@ networks:
     name: boilerplate
 
 services:
-  db:
-    image: keinos/sqlite3:latest
-    container_name: db
-    hostname: db
-    networks:
-      - boilerplate
-    volumes:
-      - .sqlite/:/root/db/
-    environment:
-      TZ: UTC
-    restart: unless-stopped
-    tty: true
-
   node:
     container_name: node
     hostname: node
@@ -43,8 +30,9 @@ services:
       TZ: UTC
       PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
       PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-    depends_on:
-      - db
+      MIKRO_ORM_CLI: src/mikro-orm.config.ts
+      MIKRO_ORM_CLI_TS_CONFIG_PATH: tsconfig.json
+      MIKRO_ORM_CLI_USE_TS_NODE: 1
     restart: unless-stopped
     stdin_open: true
     tty: true

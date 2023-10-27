@@ -1,10 +1,32 @@
+import { MikroORM } from '@mikro-orm/core';
 import puppeteer from 'puppeteer';
+import config from './mikro-orm.config';
+import { Status } from './entities/status.entity';
+import { EntityRepository } from '@mikro-orm/sqlite';
 
 export class PuppeteerApp {
+	private repository!: EntityRepository<Status>;
+
   private count = 0;
 
+	private time = 0;
+
+	constructor() {
+		this.initMikroOrm();
+	}
+
+	private async initMikroOrm(): Promise<void> {
+		const orm = await MikroORM.init(config);
+
+		this.repository = orm.em.fork().getRepository(Status);
+	}
+
 	async execute() {
+		this.time = new Date().getTime();
+
 		await this.check();
+
+		console.log(await this.repository.findAll());
 
 		setTimeout(async () => {
 			await this.execute();
@@ -55,6 +77,14 @@ export class PuppeteerApp {
         console.log(`${this.count} trys...`);
         throw new Error('error');
       }
+
+			const entity = new Status({
+				responseTime: new Date().getTime() - this.time
+			})
+
+			const data = this.repository.create(entity);
+
+			console.log(data);
 
 			return result;
 		}
