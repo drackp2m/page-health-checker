@@ -6,7 +6,7 @@
 	"scripts": {
 		"dev:checker": "ts-node src/api/puppeteer.app.ts",
 		"dev": "npm-run-all --parallel dev:api dev:app",
-		"dev:api": "nodemon",
+		"dev:api": "vite --config vite.config.api.ts",
 		"dev:app": "vite",
 		"build:app": "vite build",
 		"preview:app": "vite preview",
@@ -20,6 +20,7 @@
 		"eslint:fix": "npm run eslint --fix",
 		"stylelint": "stylelint --max-warnings 0",
 		"stylelint:fix": "npm run stylelint --fix",
+		"update": "npx -y npm-check-updates",
 		"prepare": "husky install"
 	},
 	"author": "Marc Jovaní González",
@@ -30,7 +31,6 @@
 		"@mikro-orm/migrations": "^5.9.0",
 		"@mikro-orm/sql-highlighter": "^1.0.1",
 		"@mikro-orm/sqlite": "^5.9.0",
-		"dotenv": "^16.3.1",
 		"fastify": "^4.24.3",
 		"mikro-orm": "^5.9.0",
 		"preact": "^10.18.1",
@@ -40,6 +40,7 @@
 	"devDependencies": {
 		"@commitlint/config-conventional": "^18.1.0",
 		"@preact/preset-vite": "^2.6.0",
+		"@swc/core": "^1.3.95",
 		"@typescript-eslint/eslint-plugin": "^6.9.0",
 		"@typescript-eslint/parser": "^6.9.0",
 		"commitizen": "^4.3.0",
@@ -56,7 +57,6 @@
 		"eslint-plugin-unused-imports": "^3.0.0",
 		"husky": "^8.0.3",
 		"lint-staged": "^15.0.2",
-		"nodemon": "^3.0.1",
 		"npm-run-all": "^4.1.5",
 		"prettier": "^3.0.3",
 		"sass": "^1.69.5",
@@ -64,9 +64,9 @@
 		"stylelint-config-clean-order": "^5.2.0",
 		"stylelint-config-standard-scss": "^11.0.0",
 		"stylelint-prettier": "^4.0.2",
-		"ts-node": "^10.9.1",
 		"typescript": "^5.2.2",
 		"vike": "^0.4.144",
-		"vite": "^4.5.0"
+		"vite": "^4.5.0",
+		"vite-plugin-node": "^3.0.2"
 	}
 }

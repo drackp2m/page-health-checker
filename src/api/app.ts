@@ -3,12 +3,10 @@ import Fastify from 'fastify';
 
 import { GetStatusesUseCase } from '../use-cases/get-statuses.use-case';
 
+export const fastify = Fastify();
+
 const conf = config();
 const port = conf.parsed?.API_PORT;
-
-const fastify = Fastify({
-	logger: false,
-});
 
 fastify.get('/', (_request, reply) => {
 	reply.send('QA Health Checker 2000');
