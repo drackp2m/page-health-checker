@@ -7,41 +7,37 @@ import { Status } from './entities/status.entity';
 import { GetTimeByIntervalUseCase } from './use-cases/get-time-by-interval.use-case';
 
 export class PuppeteerApp {
+	private readonly checkInterval = 15;
 	private repository!: EntityRepository<Status>;
 
 	private count = 0;
-
-	private time = 0;
 
 	constructor() {
 		this.initMikroOrm();
 	}
 
 	async execute() {
-		const timeUseCase = new GetTimeByIntervalUseCase();
+		const getTimeByInterval = new GetTimeByIntervalUseCase();
 
-		timeUseCase.execute(2).subscribe((value) => {
-			console.log(value);
+		getTimeByInterval.execute(this.checkInterval).subscribe(async (date) => {
+			console.log(date);
+			const checkTime = await this.check();
+
+			console.log(checkTime);
+
+			const entity = new Status({
+				responseTime: checkTime || this.checkInterval * 1000,
+				createdAt: date,
+				updatedAt: date,
+			});
+
+			this.repository.nativeInsert(entity);
 		});
-
-		// setTimeout(async () => {
-		// 	console.log(`${new Date().getSeconds()}:${new Date().getMilliseconds()}`);
-
-		// 	await this.execute();
-		// }, timeUntilNextSecond);
-
-		// this.time = new Date().getTime();
-
-		// await this.check();
-
-		// console.log(await this.repository.findAll());
-
-		// setTimeout(async () => {
-		// 	await this.execute();
-		// }, 500);
 	}
 
-	private async check() {
+	private async check(): Promise<number | null> {
+		const startDate = new Date();
+
 		{
 			const browser = await puppeteer.launch({
 				headless: 'new',
@@ -84,15 +80,8 @@ export class PuppeteerApp {
 				throw new Error('error');
 			}
 
-			// const entity = new Status({
-			// 	responseTime: new Date().getTime() - this.time,
-			// });
-
-			// const data = this.repository.nativeInsert(entity);
-
-			// console.log(data);
-
-			return result;
+			// return result ? new Date().getTime() - startDate.getTime() : null;
+			return new Date().getTime() - startDate.getTime();
 		}
 	}
 
