@@ -1,0 +1,48 @@
+@use './abstracts/generate-variables';
+@use './utilities/layout';
+@use './utilities/visibility';
+@use './utilities/spacing';
+@use './utilities/rounded';
+@use './utilities/color';
+@use './utilities/typography';
+@use './utilities/shadow';
+
+html {
+	overflow: hidden;
+	font-family: Recursive, sans-serif;
+	font-size: 16px;
+	font-weight: var(--font-weight-md);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: var(--font-weight-xxl);
+}
+
+h1 {
+	font-size: var(--font-size-xxxl);
+}
+
+h2 {
+	font-size: var(--font-size-xxl);
+}
+
+h3 {
+	font-size: var(--font-size-xl);
+}
+
+h4 {
+	font-size: var(--font-size-lg);
+}
+
+h5 {
+	font-size: var(--font-size-md);
+}
+
+h6 {
+	font-size: var(--font-size-sm);
+}

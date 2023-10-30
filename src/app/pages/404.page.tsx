@@ -1,3 +1,5 @@
+import '../scss/main.scss';
+
 export function Page() {
 	return (
 		<section>
