@@ -1,6 +1,6 @@
 import { MikroORM } from '@mikro-orm/core';
 import { EntityRepository } from '@mikro-orm/sqlite';
-import puppeteer from 'puppeteer';
+import puppeteer, { Browser } from 'puppeteer';
 
 import config from './database/mikro-orm.config';
 import { Status } from './entities/status.entity';
@@ -8,6 +8,7 @@ import { GetTimeByIntervalUseCase } from './use-cases/get-time-by-interval.use-c
 
 export class PuppeteerApp {
 	private readonly checkInterval = 15;
+	private browser!: Browser;
 	private repository!: EntityRepository<Status>;
 
 	private count = 0;
@@ -21,6 +22,8 @@ export class PuppeteerApp {
 
 		getTimeByInterval.execute(this.checkInterval).subscribe(async (date) => {
 			console.log(date);
+
+			await this.browser.close();
 			const checkTime = await this.check();
 
 			console.log(checkTime);
@@ -39,12 +42,12 @@ export class PuppeteerApp {
 		const startDate = new Date();
 
 		{
-			const browser = await puppeteer.launch({
+			this.browser = await puppeteer.launch({
 				headless: 'new',
 				timeout: 1000,
 			});
 
-			const page = await browser.newPage();
+			const page = await this.browser.newPage();
 
 			await page.goto('https://drackp2m.github.io/set-online');
 
@@ -64,7 +67,7 @@ export class PuppeteerApp {
 
 			const wrongSets = (await text?.evaluate((el) => el.textContent))?.split(':')[1];
 
-			await browser.close();
+			await this.browser.close();
 
 			const result = wrongSets === '0';
 
