@@ -2,8 +2,9 @@ import { MikroORM } from '@mikro-orm/core';
 import { EntityRepository } from '@mikro-orm/sqlite';
 import puppeteer from 'puppeteer';
 
-import config from '../database/mikro-orm.config';
-import { Status } from '../entities/status.entity';
+import config from './database/mikro-orm.config';
+import { Status } from './entities/status.entity';
+import { GetTimeByIntervalUseCase } from './use-cases/get-time-by-interval.use-case';
 
 export class PuppeteerApp {
 	private repository!: EntityRepository<Status>;
@@ -17,15 +18,27 @@ export class PuppeteerApp {
 	}
 
 	async execute() {
-		this.time = new Date().getTime();
+		const timeUseCase = new GetTimeByIntervalUseCase();
 
-		await this.check();
+		timeUseCase.execute(2).subscribe((value) => {
+			console.log(value);
+		});
 
-		console.log(await this.repository.findAll());
+		// setTimeout(async () => {
+		// 	console.log(`${new Date().getSeconds()}:${new Date().getMilliseconds()}`);
 
-		setTimeout(async () => {
-			await this.execute();
-		}, 500);
+		// 	await this.execute();
+		// }, timeUntilNextSecond);
+
+		// this.time = new Date().getTime();
+
+		// await this.check();
+
+		// console.log(await this.repository.findAll());
+
+		// setTimeout(async () => {
+		// 	await this.execute();
+		// }, 500);
 	}
 
 	private async check() {
@@ -59,14 +72,8 @@ export class PuppeteerApp {
 
 			const result = wrongSets === '0';
 
-			const now = new Date();
-			let time = '';
-			time += now.getHours().toString().padStart(2, '0') + ':';
-			time += now.getMinutes().toString().padStart(2, '0') + ':';
-			time += now.getSeconds().toString().padStart(2, '0');
-
 			console.log(
-				`[${time}] ` +
+				`[${this.getTime()}] ` +
 					(result ? 'Good luck' : 'Bad luck') +
 					` checking cards: ${cardPositions.join(',')}.`,
 			);
@@ -77,13 +84,13 @@ export class PuppeteerApp {
 				throw new Error('error');
 			}
 
-			const entity = new Status({
-				responseTime: new Date().getTime() - this.time,
-			});
+			// const entity = new Status({
+			// 	responseTime: new Date().getTime() - this.time,
+			// });
 
-			const data = this.repository.create(entity);
+			// const data = this.repository.nativeInsert(entity);
 
-			console.log(data);
+			// console.log(data);
 
 			return result;
 		}
@@ -107,6 +114,16 @@ export class PuppeteerApp {
 		}
 
 		return numbers;
+	}
+
+	private getTime(): string {
+		const now = new Date();
+		let time = '';
+		time += now.getHours().toString().padStart(2, '0') + ':';
+		time += now.getMinutes().toString().padStart(2, '0') + ':';
+		time += now.getSeconds().toString().padStart(2, '0');
+
+		return time;
 	}
 }
 
