@@ -8,7 +8,7 @@ export class Status extends CustomBaseEntity {
 	responseTime!: number;
 
 	constructor(data: Partial<Status>) {
-		super();
+		super(data);
 		Object.assign(this, data);
 	}
 }

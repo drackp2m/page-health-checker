@@ -1,8 +1,0 @@
-{
-  "watch": ["src/api"],
-  "ext": "ts",
-	"delay": 100,
-  "execMap": {
-    "ts": "ts-node"
-  }
-}

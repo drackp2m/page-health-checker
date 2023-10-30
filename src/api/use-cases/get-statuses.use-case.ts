@@ -5,6 +5,6 @@ export class GetStatusesUseCase {
 	async execute(): Promise<Status[]> {
 		const statusRepository = new StatusRepository();
 
-		return statusRepository.findAll();
+		return statusRepository.findAll({ fields: ['createdAt', 'responseTime'] });
 	}
 }

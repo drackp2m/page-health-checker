@@ -1,41 +1,53 @@
 import { MikroORM } from '@mikro-orm/core';
 import { EntityRepository } from '@mikro-orm/sqlite';
-import puppeteer from 'puppeteer';
+import puppeteer, { Browser } from 'puppeteer';
 
-import config from '../database/mikro-orm.config';
-import { Status } from '../entities/status.entity';
+import config from './database/mikro-orm.config';
+import { Status } from './entities/status.entity';
+import { GetTimeByIntervalUseCase } from './use-cases/get-time-by-interval.use-case';
 
 export class PuppeteerApp {
+	private readonly checkInterval = 15;
+	private browser!: Browser;
 	private repository!: EntityRepository<Status>;
 
 	private count = 0;
-
-	private time = 0;
 
 	constructor() {
 		this.initMikroOrm();
 	}
 
 	async execute() {
-		this.time = new Date().getTime();
+		const getTimeByInterval = new GetTimeByIntervalUseCase();
 
-		await this.check();
+		getTimeByInterval.execute(this.checkInterval).subscribe(async (date) => {
+			console.log(date);
 
-		console.log(await this.repository.findAll());
+			await this.browser.close();
+			const checkTime = await this.check();
 
-		setTimeout(async () => {
-			await this.execute();
-		}, 500);
+			console.log(checkTime);
+
+			const entity = new Status({
+				responseTime: checkTime || this.checkInterval * 1000,
+				createdAt: date,
+				updatedAt: date,
+			});
+
+			this.repository.nativeInsert(entity);
+		});
 	}
 
-	private async check() {
+	private async check(): Promise<number | null> {
+		const startDate = new Date();
+
 		{
-			const browser = await puppeteer.launch({
+			this.browser = await puppeteer.launch({
 				headless: 'new',
 				timeout: 1000,
 			});
 
-			const page = await browser.newPage();
+			const page = await this.browser.newPage();
 
 			await page.goto('https://drackp2m.github.io/set-online');
 
@@ -55,18 +67,12 @@ export class PuppeteerApp {
 
 			const wrongSets = (await text?.evaluate((el) => el.textContent))?.split(':')[1];
 
-			await browser.close();
+			await this.browser.close();
 
 			const result = wrongSets === '0';
 
-			const now = new Date();
-			let time = '';
-			time += now.getHours().toString().padStart(2, '0') + ':';
-			time += now.getMinutes().toString().padStart(2, '0') + ':';
-			time += now.getSeconds().toString().padStart(2, '0');
-
 			console.log(
-				`[${time}] ` +
+				`[${this.getTime()}] ` +
 					(result ? 'Good luck' : 'Bad luck') +
 					` checking cards: ${cardPositions.join(',')}.`,
 			);
@@ -77,15 +83,8 @@ export class PuppeteerApp {
 				throw new Error('error');
 			}
 
-			const entity = new Status({
-				responseTime: new Date().getTime() - this.time,
-			});
-
-			const data = this.repository.create(entity);
-
-			console.log(data);
-
-			return result;
+			// return result ? new Date().getTime() - startDate.getTime() : null;
+			return new Date().getTime() - startDate.getTime();
 		}
 	}
 
@@ -107,6 +106,16 @@ export class PuppeteerApp {
 		}
 
 		return numbers;
+	}
+
+	private getTime(): string {
+		const now = new Date();
+		let time = '';
+		time += now.getHours().toString().padStart(2, '0') + ':';
+		time += now.getMinutes().toString().padStart(2, '0') + ':';
+		time += now.getSeconds().toString().padStart(2, '0');
+
+		return time;
 	}
 }
 

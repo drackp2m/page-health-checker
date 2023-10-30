@@ -26,7 +26,7 @@ async function render(pageContext) {
 
 	// See https://vike.dev/head
 	const { documentProps } = pageContext.exports;
-	const title = (documentProps && documentProps.title) || 'Vite SSR + Preact';
+	const title = (documentProps && documentProps.title) || 'QA Health Checking 2000';
 	const desc = (documentProps && documentProps.description) || 'Preact app with Vite and vike';
 
 	const documentHtml = escapeInject`<!DOCTYPE html>

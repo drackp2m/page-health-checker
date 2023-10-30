@@ -10,4 +10,10 @@ export abstract class CustomBaseEntity extends BaseEntity<CustomBaseEntity, 'id'
 
 	@Property({ onUpdate: () => new Date() })
 	updatedAt: Date = new Date();
+
+	constructor(data: Partial<CustomBaseEntity>) {
+		super();
+
+		Object.assign(this, data);
+	}
 }
