@@ -20,7 +20,7 @@ async function render(pageContext) {
 	if (!Page) throw new Error('My render() hook expects pageContext.Page to be defined');
 	const pageHtml = renderToString(
 		<PageShell pageContext={pageContext}>
-			<Page {...pageProps} />
+			{/* <Page {...pageProps} /> */}
 		</PageShell>,
 	);
 

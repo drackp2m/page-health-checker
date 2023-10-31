@@ -1,6 +1,6 @@
 import { MikroORM } from '@mikro-orm/core';
 import { EntityRepository } from '@mikro-orm/sqlite';
-import puppeteer, { Browser } from 'puppeteer';
+import puppeteer from 'puppeteer';
 
 import config from './database/mikro-orm.config';
 import { Status } from './entities/status.entity';
@@ -8,7 +8,6 @@ import { GetTimeByIntervalUseCase } from './use-cases/get-time-by-interval.use-c
 
 export class PuppeteerApp {
 	private readonly checkInterval = 15;
-	private browser!: Browser;
 	private repository!: EntityRepository<Status>;
 
 	private count = 0;
@@ -23,7 +22,6 @@ export class PuppeteerApp {
 		getTimeByInterval.execute(this.checkInterval).subscribe(async (date) => {
 			console.log(date);
 
-			await this.browser.close();
 			const checkTime = await this.check();
 
 			console.log(checkTime);
@@ -42,49 +40,57 @@ export class PuppeteerApp {
 		const startDate = new Date();
 
 		{
-			this.browser = await puppeteer.launch({
+			const browser = await puppeteer.launch({
 				headless: 'new',
 				timeout: 1000,
 			});
 
-			const page = await this.browser.newPage();
+			const page = await browser.newPage();
 
 			await page.goto('https://drackp2m.github.io/set-online');
 
 			await page.setViewport({ width: 600, height: 800 });
 
-			const text = await page.waitForSelector('.flex-row.justify-between p:nth-child(2)');
+			try {
+				const text = await page.waitForSelector('.flex-row.justify-between p:nth-child(2)');
 
-			const cardPositions = this.getThreeRandomNumbersBetweenOneAndTwelve();
+				const cardPositions = this.getThreeRandomNumbersBetweenOneAndTwelve();
 
-			for (const position of cardPositions) {
-				const card = await page.waitForSelector(`#card-game set-card:nth-child(${position})`);
+				for (const position of cardPositions) {
+					const card = await page.waitForSelector(
+						`#card-game set-card:nth-child(${position}) div.container`,
+					);
 
-				await card?.click();
+					await card?.evaluate((el) => el.click());
 
-				// await page.screenshot({ path: `./snapshot_${position}.png` });
+					// await page.screenshot({ path: `./snapshot_${position}.png` });
+				}
+
+				await page.waitForNetworkIdle();
+
+				const wrongSets = (await text?.evaluate((el) => el.textContent))?.split(':')[1];
+
+				const result = wrongSets === '0';
+
+				await browser.close();
+
+				console.log(
+					`[${this.getTime()}] ` +
+						(result ? 'Good luck' : 'Bad luck') +
+						` checking cards: ${cardPositions.join(',')}.`,
+				);
+
+				this.count++;
+				if (result) {
+					console.log(`${this.count} trys...`);
+					throw new Error('error');
+				}
+
+				// return result ? new Date().getTime() - startDate.getTime() : null;
+				return new Date().getTime() - startDate.getTime();
+			} catch (e) {
+				return null;
 			}
-
-			const wrongSets = (await text?.evaluate((el) => el.textContent))?.split(':')[1];
-
-			await this.browser.close();
-
-			const result = wrongSets === '0';
-
-			console.log(
-				`[${this.getTime()}] ` +
-					(result ? 'Good luck' : 'Bad luck') +
-					` checking cards: ${cardPositions.join(',')}.`,
-			);
-
-			this.count++;
-			if (result) {
-				console.log(`${this.count} trys...`);
-				throw new Error('error');
-			}
-
-			// return result ? new Date().getTime() - startDate.getTime() : null;
-			return new Date().getTime() - startDate.getTime();
 		}
 	}
 

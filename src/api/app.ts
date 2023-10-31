@@ -1,9 +1,17 @@
+import fs from 'node:fs';
+
 import { config } from 'dotenv';
 import Fastify from 'fastify';
 
 import { GetStatusesUseCase } from './use-cases/get-statuses.use-case';
 
-export const fastify = Fastify();
+export const fastify = Fastify({
+	http2: true,
+	https: {
+		key: fs.readFileSync('certs/key.pem'),
+		cert: fs.readFileSync('certs/cert.pem'),
+	},
+});
 
 const conf = config();
 const port = conf.parsed?.API_PORT;

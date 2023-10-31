@@ -31,11 +31,13 @@
 		"@mikro-orm/migrations": "^5.9.0",
 		"@mikro-orm/sql-highlighter": "^1.0.1",
 		"@mikro-orm/sqlite": "^5.9.0",
+		"chart.js": "^4.4.0",
 		"fastify": "^4.24.3",
 		"mikro-orm": "^5.9.0",
 		"preact": "^10.18.1",
 		"preact-render-to-string": "^6.2.2",
 		"puppeteer": "^21.4.1",
+		"react-chartjs-2": "^5.2.0",
 		"the-new-css-reset": "^1.11.1"
 	},
 	"devDependencies": {
@@ -67,6 +69,7 @@
 		"stylelint-config-clean-order": "^5.2.0",
 		"stylelint-config-standard-scss": "^11.0.0",
 		"stylelint-prettier": "^4.0.2",
+		"ts-node": "^10.9.1",
 		"typescript": "^5.2.2",
 		"vike": "^0.4.144",
 		"vite": "^4.5.0",
