@@ -14,7 +14,7 @@ export const fastify = Fastify({
 	},
 });
 fastify.register(cors, {
-	// put your options here
+	origin: '*',
 });
 
 const conf = config();
