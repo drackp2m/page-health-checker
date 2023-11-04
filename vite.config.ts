@@ -8,5 +8,10 @@ export default defineConfig({
 	server: {
 		host: '0.0.0.0',
 		port: 4200,
+		cors: true,
+		https: {
+			key: 'certs/key.pem',
+			cert: 'certs/cert.pem',
+		},
 	},
 });

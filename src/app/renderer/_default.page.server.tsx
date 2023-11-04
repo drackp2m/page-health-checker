@@ -6,21 +6,17 @@ export const passToClient = ['pageProps', 'urlPathname'];
 import { renderToString } from 'preact-render-to-string';
 import { dangerouslySkipEscape, escapeInject } from 'vike/server';
 
-import { getStatuses } from '../services/statuses.service';
-
 import { PageShell } from './PageShell';
 
 async function render(pageContext) {
-	const data = await getStatuses();
-
-	console.log(data);
-
 	const { Page, pageProps } = pageContext;
 	// This render() hook only supports SSR, see https://vike.dev/render-modes for how to modify render() to support SPA
 	if (!Page) throw new Error('My render() hook expects pageContext.Page to be defined');
 	const pageHtml = renderToString(
 		<PageShell pageContext={pageContext}>
-			{/* <Page {...pageProps} /> */}
+			{
+				// <Page {...pageProps} />
+			}
 		</PageShell>,
 	);
 

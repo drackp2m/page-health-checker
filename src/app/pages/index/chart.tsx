@@ -7,7 +7,10 @@ import {
 	Title,
 	Tooltip,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import { useState } from 'react';
+import { Chart } from 'react-chartjs-2';
+
+import { getStatuses } from '../../services/statuses.service';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -20,6 +23,7 @@ export const options = {
 	},
 	scales: {
 		x: {
+			display: false,
 			grid: {
 				display: false,
 			},
@@ -30,27 +34,27 @@ export const options = {
 	},
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+export const AppChart = () => {
+	const [data, setData] = useState({ labels: [], datasets: [] });
 
-export const data = {
-	labels,
-	datasets: [
-		{
-			label: 'Dataset 1',
-			data: labels.map(() => Math.random() * 1000),
-			backgroundColor: 'rgba(255, 99, 132, 0.5)',
-		},
-	],
+	try {
+		getStatuses().then((res) => {
+			const data = { labels: [], datasets: [] };
+			const statuses: { id: string; responseTime: number; createdAt: string }[] = JSON.parse(res);
+
+			console.log(statuses);
+
+			data.labels = statuses?.map((item) => new Date(item.createdAt));
+			data.datasets.push({
+				data: statuses?.map((item) => item.responseTime),
+				backgroundColor: 'rgba(255, 99, 132, 0.5)',
+			});
+
+			setData(data);
+		});
+	} catch (error) {
+		console.error(error);
+	}
+
+	return <Chart type="bar" options={options} data={data} />;
 };
-
-try {
-	fetch('http://localhost:3300/stats').then(async (res) => {
-		console.log(await res.text());
-	});
-} catch (error) {
-	console.error(error);
-}
-
-export function AppChart() {
-	return <Bar options={options} data={data} />;
-}

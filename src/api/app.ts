@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 
+import cors from '@fastify/cors';
 import { config } from 'dotenv';
 import Fastify from 'fastify';
 
@@ -11,6 +12,9 @@ export const fastify = Fastify({
 		key: fs.readFileSync('certs/key.pem'),
 		cert: fs.readFileSync('certs/cert.pem'),
 	},
+});
+fastify.register(cors, {
+	// put your options here
 });
 
 const conf = config();
